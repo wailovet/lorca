@@ -33,6 +33,8 @@ var defaultChromeArgs = []string{
 	"--disable-breakpad",
 	"--disable-client-side-phishing-detection",
 	"--disable-default-apps",
+	"--allow-running-insecure-content",
+	"--restore-last-session",
 	"--disable-dev-shm-usage",
 	"--disable-infobars",
 	"--disable-extensions",
