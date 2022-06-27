@@ -44,6 +44,7 @@ type chrome struct {
 	window   int
 	pending  map[int]chan result
 	bindings map[string]bindingFunc
+	onStart  func()
 }
 
 func newChromeWithArgs(chromeBinary string, args ...string) (*chrome, error) {
@@ -270,6 +271,11 @@ func (c *chrome) readLoop() {
 
 			if res.ID == 0 && res.Method == "Runtime.consoleAPICalled" || res.Method == "Runtime.exceptionThrown" {
 				// log.Println(params.Message)
+			} else if res.ID == 0 && res.Method == "Runtime.executionContextCreated" {
+				// log.Println("Runtime.executionContextCreated:", res.Params.Payload)
+				if c.onStart != nil {
+					c.onStart()
+				}
 			} else if res.ID == 0 && res.Method == "Runtime.bindingCalled" {
 				payload := struct {
 					Name string            `json:"name"`

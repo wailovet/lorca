@@ -12,6 +12,7 @@ import (
 // UI interface allows talking to the HTML5 UI from Go.
 type UI interface {
 	Load(url string) error
+	OnStart(func())
 	Bounds() (Bounds, error)
 	SetBounds(Bounds) error
 	Bind(name string, f interface{}) error
@@ -95,6 +96,10 @@ func New(url, dir string, width, height int, customArgs ...string) (UI, error) {
 
 func (u *ui) Done() <-chan struct{} {
 	return u.done
+}
+
+func (u *ui) OnStart(c func()) {
+	u.chrome.onStart = c
 }
 
 func (u *ui) Close() error {
