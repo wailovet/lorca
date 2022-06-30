@@ -269,10 +269,10 @@ func (c *chrome) readLoop() {
 			res := targetMessage{}
 			json.Unmarshal([]byte(params.Message), &res)
 
+			// log.Println("res.Method:", res.Method)
 			if res.ID == 0 && res.Method == "Runtime.consoleAPICalled" || res.Method == "Runtime.exceptionThrown" {
 				// log.Println(params.Message)
 			} else if res.ID == 0 && res.Method == "Runtime.executionContextCreated" {
-				// log.Println("Runtime.executionContextCreated:", res.Params.Payload)
 				if c.onStart != nil {
 					c.onStart()
 				}
